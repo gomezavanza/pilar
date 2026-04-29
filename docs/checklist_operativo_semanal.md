@@ -24,3 +24,7 @@
 ## 5) Cierre
 - [ ] Archivar ficheros fuente de la semana.
 - [ ] Registrar incidencias y acciones correctivas.
+
+## 6) Automatización opcional (ya disponible)
+- [ ] Ejecutar `python -m src.jobs.job_weekly_channels` para procesar automáticamente CSV/XLSX/XLS de `data/inbound/uber/` y `data/inbound/hiopos/`.
+- [ ] Verificar que los ficheros procesados se mueven a `data/archive/`.
