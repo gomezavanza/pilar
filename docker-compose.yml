@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:16
+    container_name: burger-bi-db
+    environment:
+      POSTGRES_DB: burger_bi
+      POSTGRES_USER: burger
+      POSTGRES_PASSWORD: burger
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/dwh_schema.sql:/docker-entrypoint-initdb.d/01_dwh_schema.sql:ro
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: burger-bi-backend
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://burger:burger@db:5432/burger_bi
+      HOLDED_API_KEY: ${HOLDED_API_KEY:-}
+    volumes:
+      - ./data:/app/data
+    command: ["python", "-m", "src.jobs.job_weekly_channels"]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: burger-bi-frontend
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://burger:burger@db:5432/burger_bi
+    ports:
+      - "8501:8501"
+
+volumes:
+  pgdata:
