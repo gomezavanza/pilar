@@ -16,7 +16,7 @@ streamlit run frontend/app.py
 ## Páginas incluidas
 
 1. **Resumen Ejecutivo** (`frontend/app.py`)
-   - KPIs: ventas totales, nº pedidos, ticket medio.
+   - KPIs: ventas totales, nº pedidos, ticket medio, variación WoW de ventas.
    - Gráfico de barras: ventas por semana y canal.
    - Gráfico de líneas: pedidos por semana y canal.
    - Tabla de detalle semanal.

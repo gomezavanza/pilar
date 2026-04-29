@@ -7,6 +7,8 @@ import plotly.express as px
 import streamlit as st
 from sqlalchemy import create_engine, text
 
+from src.analytics.kpis import build_weekly_totals, calc_ticket_medio, calc_wow
+
 st.set_page_config(page_title="BI Hamburguesería", layout="wide")
 st.title("📊 BI Hamburguesería")
 
@@ -57,14 +59,20 @@ df_filtered = df[df["canal_nombre"].isin(canales)].copy()
 df_filtered["periodo"] = df_filtered["anio_iso"].astype(str) + "-W" + df_filtered["semana_iso"].astype(str).str.zfill(2)
 
 # KPIs
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 ventas_total = float(df_filtered["ventas_totales_bruto"].sum())
 pedidos_total = int(df_filtered["num_pedidos"].sum())
-ticket_medio = ventas_total / pedidos_total if pedidos_total else 0.0
+ticket_medio = calc_ticket_medio(ventas_total, pedidos_total)
+
+weekly_totals = build_weekly_totals(df_filtered)
+wow = 0.0
+if len(weekly_totals) > 1:
+    wow = calc_wow(float(weekly_totals.iloc[-1]["ventas_totales_bruto"]), float(weekly_totals.iloc[-2]["ventas_totales_bruto"]))
 
 col1.metric("Ventas totales", f"€ {ventas_total:,.2f}")
 col2.metric("Nº pedidos", f"{pedidos_total:,}")
 col3.metric("Ticket medio", f"€ {ticket_medio:,.2f}")
+col4.metric("WoW ventas", f"{wow:,.1f}%")
 
 # Charts
 left, right = st.columns(2)
