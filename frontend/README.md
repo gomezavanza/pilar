@@ -10,12 +10,18 @@ streamlit run frontend/app.py
 
 ## Configuración de datos
 
-- Si existe `DATABASE_URL`, la app consulta `dwh.fact_ventas_resumen_semana` + `dwh.dim_canal`.
-- Si no existe `DATABASE_URL`, la app muestra datos demo para poder validar la UI.
+- Si existe `DATABASE_URL`, la app consulta tablas DWH.
+- Si no existe `DATABASE_URL`, la app muestra datos demo para validar la UI.
 
-## Vistas incluidas
+## Páginas incluidas
 
-- KPIs: ventas totales, nº pedidos, ticket medio.
-- Gráfico de barras: ventas por semana y canal.
-- Gráfico de líneas: pedidos por semana y canal.
-- Tabla de detalle semanal.
+1. **Resumen Ejecutivo** (`frontend/app.py`)
+   - KPIs: ventas totales, nº pedidos, ticket medio.
+   - Gráfico de barras: ventas por semana y canal.
+   - Gráfico de líneas: pedidos por semana y canal.
+   - Tabla de detalle semanal.
+
+2. **Productos y Canales** (`frontend/pages/2_Productos_y_Canales.py`)
+   - Top productos por ventas en la semana seleccionada.
+   - Comparativa de ventas por canal (Uber vs Hiopos u otros).
+   - Tabla de detalle por artículo/canal/semana.
